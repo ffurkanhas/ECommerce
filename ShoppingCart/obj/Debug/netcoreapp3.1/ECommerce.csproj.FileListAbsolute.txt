@@ -1,0 +1,13 @@
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\obj\Debug\netcoreapp3.1\ECommerce.csproj.CoreCompileInputs.cache
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\obj\Debug\netcoreapp3.1\ECommerce.AssemblyInfoInputs.cache
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\obj\Debug\netcoreapp3.1\ECommerce.AssemblyInfo.cs
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\bin\Debug\netcoreapp3.1\ECommerce.exe
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\bin\Debug\netcoreapp3.1\ECommerce.deps.json
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\bin\Debug\netcoreapp3.1\ECommerce.runtimeconfig.json
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\bin\Debug\netcoreapp3.1\ECommerce.runtimeconfig.dev.json
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\bin\Debug\netcoreapp3.1\ECommerce.dll
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\bin\Debug\netcoreapp3.1\ECommerce.pdb
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\obj\Debug\netcoreapp3.1\ECommerce.dll
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\obj\Debug\netcoreapp3.1\ECommerce.pdb
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\obj\Debug\netcoreapp3.1\ECommerce.genruntimeconfig.cache
+C:\Users\ffurkanhas\Workspace\ShoppingCart\ShoppingCart\obj\Debug\netcoreapp3.1\ECommerce.csprojAssemblyReference.cache
