@@ -2,7 +2,7 @@
 
 ### Prerequisites
 
- - dotnet core 3.1
+ - [dotnet core sdk 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 
 ### Run Project
 
