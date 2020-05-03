@@ -1,4 +1,6 @@
-﻿namespace ECommerce
+﻿using ECommerce.Entities;
+
+namespace ECommerce.Interfaces
 {
     public interface IShoppingCart
     {

@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ECommerce.Enums;
 
-namespace ECommerce
+namespace ECommerce.Entities
 {
-    public class Campaign
+    public abstract class DiscountBase
     {
-        public Campaign(Category category, double discount, int minimumAmount, DiscountType discountType)
+        public DiscountBase(double discount, int minimumAmount, DiscountType discountType)
         {
-            Category = category;
             Discount = discount;
             MinimumAmount = minimumAmount;
             DiscountType = discountType;
         }
-
-        public Category Category { get; private set; }
 
         public double Discount { get; private set; }
 

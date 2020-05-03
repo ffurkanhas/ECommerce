@@ -1,16 +1,9 @@
-﻿using System;
-
-namespace ECommerce
+﻿namespace ECommerce.Entities
 {
     public class Product
     {
         public Product(string title, double price, Category category)
         {
-            if (string.IsNullOrWhiteSpace(title) || price <= 0)
-            {
-                throw new Exception();
-            }
-
             Title = title;
             Price = price;
             Category = category;

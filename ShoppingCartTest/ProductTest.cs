@@ -1,4 +1,5 @@
 ﻿using ECommerce;
+using ECommerce.Entities;
 using System;
 using Xunit;
 
@@ -6,22 +7,6 @@ namespace ShoppingCartTest
 {
     public class ProductTest
     {
-        [Fact]
-        public void ProductShouldThrowExceptionWhenTitleIsEmpty()
-        {
-            Category category = new Category("Food");
-
-            Assert.Throws<Exception>(() => new Product("", 10.0, category));
-        }
-
-        [Fact]
-        public void ProductShouldThrowExceptionWhenPriceLowerThanZero()
-        {
-            Category category = new Category("Food");
-
-            Assert.Throws<Exception>(() => new Product("Apple", -5, category));
-        }
-
         [Fact]
         public void ProductShouldHaveTitlePriceAndCategory()
         {

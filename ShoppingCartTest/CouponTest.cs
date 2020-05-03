@@ -1,4 +1,6 @@
 ﻿using ECommerce;
+using ECommerce.Entities;
+using ECommerce.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;

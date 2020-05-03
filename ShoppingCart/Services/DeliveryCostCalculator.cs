@@ -1,6 +1,7 @@
-﻿using System;
+﻿using ECommerce.Interfaces;
+using System;
 
-namespace ECommerce
+namespace ECommerce.Services
 {
     public class DeliveryCostCalculator : IDeliveryCostCalculator
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ECommerce
+﻿namespace ECommerce.Entities
 {
     public class Category
     {

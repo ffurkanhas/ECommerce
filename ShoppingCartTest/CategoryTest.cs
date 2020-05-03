@@ -1,4 +1,5 @@
 using ECommerce;
+using ECommerce.Entities;
 using System;
 using Xunit;
 

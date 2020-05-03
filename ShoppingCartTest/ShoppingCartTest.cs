@@ -1,4 +1,7 @@
-﻿using ECommerce;
+﻿using ECommerce.Entities;
+using ECommerce.Enums;
+using ECommerce.Interfaces;
+using ECommerce.Services;
 using Moq;
 using System;
 using Xunit;
@@ -59,8 +62,6 @@ namespace ShoppingCartTest
             shoppingCart.AddItem(apple, 5);
             shoppingCart.AddItem(banana, 5);
 
-            Assert.Equal(8, shoppingCart.Items[apple]);
-            Assert.Equal(5, shoppingCart.Items[banana]);
             Assert.Equal(170.0, shoppingCart.TotalAmount);
         }
 
@@ -117,6 +118,27 @@ namespace ShoppingCartTest
             ShoppingCart shoppingCart = new ShoppingCart();
 
             shoppingCart.AddItem(product, 5);
+
+            Assert.Equal(0, shoppingCart.GetCampaignDiscount());
+        }
+
+        [Fact]
+        public void ShoppingCartShouldNotApplyDiscountWhenDiscountTypeIsNone()
+        {
+            Category category = new Category("Food");
+            Category category2 = new Category("Toys");
+
+            Product apple = new Product("Apple", 10.0, category);
+            Product rcCar = new Product("Rc Car", 1.0, category2);
+
+            ShoppingCart shoppingCart = new ShoppingCart();
+
+            shoppingCart.AddItem(apple, 5);
+            shoppingCart.AddItem(rcCar, 3);
+
+            Campaign campaign = new Campaign(category, 10, 3, DiscountType.None);
+
+            shoppingCart.ApplyDiscounts(campaign);
 
             Assert.Equal(0, shoppingCart.GetCampaignDiscount());
         }
@@ -262,6 +284,27 @@ namespace ShoppingCartTest
             shoppingCart.ApplyCoupon(coupon);
 
             Assert.Equal(5.3, shoppingCart.GetCouponDiscount());
+        }
+
+        [Fact]
+        public void ShoppingCartShouldNotAppylDiscountWhenDiscountTypeIsNone()
+        {
+            Category category = new Category("Food");
+            Category category2 = new Category("Toys");
+
+            Product apple = new Product("Apple", 10.0, category);
+            Product rcCar = new Product("Rc Car", 1.0, category2);
+
+            ShoppingCart shoppingCart = new ShoppingCart();
+
+            shoppingCart.AddItem(apple, 5);
+            shoppingCart.AddItem(rcCar, 3);
+
+            Coupon coupon = new Coupon(50, 10, DiscountType.None);
+
+            shoppingCart.ApplyCoupon(coupon);
+
+            Assert.Equal(0, shoppingCart.GetCouponDiscount());
         }
 
         [Fact]

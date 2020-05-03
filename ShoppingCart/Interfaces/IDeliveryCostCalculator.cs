@@ -1,4 +1,4 @@
-﻿namespace ECommerce
+﻿namespace ECommerce.Interfaces
 {
     public interface IDeliveryCostCalculator
     {

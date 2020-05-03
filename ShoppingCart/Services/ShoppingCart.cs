@@ -1,23 +1,25 @@
-﻿using System;
+﻿using ECommerce.Entities;
+using ECommerce.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ECommerce
+namespace ECommerce.Services
 {
     public class ShoppingCart : IShoppingCart
     {
         public ShoppingCart()
         {
-            Items = new Dictionary<Product, int>();
-            Campaigns = new List<Campaign>();
+            Items = new HashSet<ShoppingCartItem>();
+            Campaigns = new HashSet<Campaign>();
         }
 
-        public IDictionary<Product, int> Items { get; private set; }
+        public HashSet<ShoppingCartItem> Items { get; private set; }
 
-        public IList<Campaign> Campaigns { get; private set; }
+        public HashSet<Campaign> Campaigns { get; private set; } = new HashSet<Campaign>();
 
-        public Coupon Coupon { get; set; }
+        public Coupon Coupon { get; private set; }
 
         public double TotalAmount { get; private set; }
 
@@ -29,13 +31,15 @@ namespace ECommerce
                 return;
             }
 
-            if (Items.ContainsKey(product))
+            ShoppingCartItem item = Items.FirstOrDefault(x => x.Product.Title == product.Title);
+
+            if (item == null)
             {
-                Items[product] = Items[product] + amount;
+                Items.Add(new ShoppingCartItem(product, amount));
             }
             else
             {
-                Items.Add(product, amount);
+                item.Amount += amount;
             }
 
             TotalAmount += product.Price * amount;
@@ -62,12 +66,7 @@ namespace ECommerce
 
         public void ApplyCoupon(Coupon coupon)
         {
-            if (coupon == null)
-            {
-                throw new ArgumentNullException("Coupon cannot be null");
-            }
-
-            Coupon = coupon;
+            Coupon = coupon ?? throw new ArgumentNullException("Coupon cannot be null");
         }
 
         public double GetCampaignDiscount()
@@ -80,32 +79,10 @@ namespace ECommerce
             double maximumDiscount = 0;
             foreach (Campaign campaign in Campaigns)
             {
-                IDictionary<Product, int> productsInSameCategoryWithCampaign = FindProductsByCategory(campaign.Category);
-                double discount = 0;
-                if (productsInSameCategoryWithCampaign != null && productsInSameCategoryWithCampaign.Any())
+                var discount = campaign.CalculateDiscount(FindProductsByCategory(campaign.Category));
+                if (discount > maximumDiscount)
                 {
-                    foreach (KeyValuePair<Product, int> keyValuePair in productsInSameCategoryWithCampaign)
-                    {
-                        if (keyValuePair.Value >= campaign.MinimumAmount)
-                        {
-                            switch (campaign.DiscountType)
-                            {
-                                case DiscountType.Rate:
-                                    discount += (keyValuePair.Value * keyValuePair.Key.Price) * campaign.Discount / 100;
-                                    break;
-                                case DiscountType.Amount:
-                                    discount += (keyValuePair.Key.Price * campaign.Discount);
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            if (discount >= maximumDiscount)
-                            {
-                                maximumDiscount = discount;
-                            }
-                        }
-                    }
+                    maximumDiscount = discount;
                 }
             }
 
@@ -119,20 +96,7 @@ namespace ECommerce
                 return 0;
             }
 
-            if (TotalAmount < Coupon.MinimumAmount)
-            {
-                return 0;
-            }
-
-            switch (Coupon.DiscountType)
-            {
-                case DiscountType.Rate:
-                    return TotalAmount * Coupon.Discount / 100;
-                case DiscountType.Amount:
-                    return Coupon.Discount;
-                default:
-                    return 0;
-            }
+            return Coupon.CalculateDiscount(TotalAmount);
         }
 
         public double GetTotalAmountAfterDiscounts()
@@ -144,12 +108,12 @@ namespace ECommerce
 
         public int GetTotalItemAmount()
         {
-            return Items.Sum(x => x.Value);
+            return Items.Sum(x => x.Amount);
         }
 
         public int GetTotalDeliveryAmount()
         {
-            return Items.GroupBy(x => x.Key.Category).Count();
+            return Items.GroupBy(x => x.Product.Category).Count();
         }
 
         public double GetDeliveryCost()
@@ -158,28 +122,29 @@ namespace ECommerce
             return deliveryCostCalculator.CalculateFor(this);
         }
 
-        private IDictionary<Product, int> FindProductsByCategory(Category category)
+        private HashSet<ShoppingCartItem> FindProductsByCategory(Category category)
         {
             if (!Items.Any())
             {
-                return null;
+                return Enumerable.Empty<ShoppingCartItem>().ToHashSet(); //Empty list
             }
 
-            return Items.Where(x => x.Key.Category.Title == category.Title).ToDictionary(x => x.Key, x => x.Value);
+            return Items.Where(x => x.Product.Category.Title == category.Title).ToHashSet();
         }
 
         public void Print()
         {
+
             StringBuilder builder = new StringBuilder();
-            var items = Items.GroupBy(x => x.Key.Category.Title).ToDictionary(x => x.Key, x => x.ToList());
+            var items = Items.GroupBy(x => x.Product.Category.Title);
 
             builder.AppendLine(string.Format("{0,-20} | {1,-20} | {2,-10} | {3,-10} | {4,-11} |", "CategoryName", "ProductName", "Quantity", "Unit Price", "Total Price"));
             builder.AppendLine("-------------------------------------------------------------------------------------");
             foreach (var item in items)
             {
-                foreach (var product in item.Value)
+                foreach (var productItem in item.Select(x => x).ToList())
                 {
-                    builder.AppendLine(string.Format("{0,-20} | {1,-20} | {2,-10} | {3,-10} | {4,-11} |", item.Key, product.Key.Title, product.Value, product.Key.Price, product.Value * product.Key.Price));
+                    builder.AppendLine(string.Format("{0,-20} | {1,-20} | {2,-10} | {3,-10} | {4,-11} |", item.Key, productItem.Product.Title, productItem.Amount, productItem.Product.Price, productItem.Amount * productItem.Product.Price));
                 }
             }
             builder.AppendLine("-------------------------------------------------------------------------------------");

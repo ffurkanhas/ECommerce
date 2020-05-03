@@ -1,4 +1,6 @@
 ﻿using ECommerce;
+using ECommerce.Interfaces;
+using ECommerce.Services;
 using Moq;
 using System;
 using Xunit;

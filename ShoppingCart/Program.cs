@@ -1,4 +1,8 @@
-﻿namespace ECommerce
+﻿using ECommerce.Entities;
+using ECommerce.Enums;
+using ECommerce.Services;
+
+namespace ECommerce
 {
     class Program
     {
