@@ -1,11 +1,11 @@
-﻿using ECommerce.Entities;
-using ECommerce.Interfaces;
+﻿using ECommerce.Interfaces;
+using ECommerce.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ECommerce.Services
+namespace ECommerce.Entities
 {
     public class ShoppingCart : IShoppingCart
     {
